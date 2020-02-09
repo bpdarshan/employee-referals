@@ -49,6 +49,10 @@ router.get('/',verifyToken,async (req, res)=>{
         }
         else{
             User.findOne({token:req.token},async (err,admin)=>{
+                if(err){
+                    res.status(400).send(err);
+                }
+                else{
                     if(admin.usertype==="admin"){
                         var user = User.find({usertype:"employee"}, (err, user) => {
                             if(err){
@@ -66,6 +70,8 @@ router.get('/',verifyToken,async (req, res)=>{
                     else{
                         res.status(403).send("not allowed to access");
                     }
+                }
+                    
                 
             });
             
