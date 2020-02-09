@@ -151,34 +151,38 @@ router.post('/',verifyToken, async (req, res) => {
 });
 
 //admin to delete the user
-router.post('/userdelete', function(req, res){
-   // jwt.verify(req.token,'secretkey',(err,authdata)=>{
+router.post('/userdelete',verifyToken,function(req, res){
+   jwt.verify(req.token,'secretkey',(err,authdata)=>{
         if(err){
             res.send(403);
         }
         else{
-
-                    if(user.usertype==="admin"){
-                     var job=User.findOne({_id:req.body._id},function(err,job){
-                        if(user.department==job.department){
-                            User.findOneAndRemove({_id : req.body._id}, function(err){
-                                if (!err) {
-                                    res.send("user deleted");
-                                }
-                                 else {
-                                   res.send(err);
-                                }
-                            });
-                        }
-                        else{
-                            res.status(403).send("not allowed to delete");
-                        }
-                     });
-                    }
-                    else{
+                User.findOne({token:req.token},async(err,doc)=>{
+                    if(doc.usertype==="admin"){
+                        var job=User.findOne({_id:req.body._id},function(err,job){
+                           if(doc.department==job.department){
+                               User.findOneAndRemove({_id : req.body._id}, function(err){
+                                   if (!err) {
+                                       res.send("user deleted");
+                                   }
+                                    else {
+                                      res.send(err);
+                                   }
+                               });
+                           }
+                           else{
+                               res.status(403).send("not allowed to delete");
+                           }
+                        });
+                       }
+                       else{
                         res.status(403).send("not allowed to delete");
                     }
+                });
+                   
+                   
            }
+        });
    
   });
 

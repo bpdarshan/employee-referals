@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 const User = mongoose.model('user', new mongoose.Schema({
     name: {
         type: String,
@@ -44,7 +45,7 @@ const User = mongoose.model('user', new mongoose.Schema({
         },
         token:{
             type:String
-        } 
+        }
     
    
     

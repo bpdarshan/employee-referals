@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const _ = require('lodash');
-const { Job, validate } = require('../models/job');
+const {Job} = require('../models/job');
 const express = require('express');
 const {User} =require('../models/user')
 const router = express.Router();
@@ -19,27 +19,27 @@ var cors = require('cors')
 router.use(cors())
 router.options('*', cors())
 
-router.post('/browsejob',(req,res)=>{
-    var filter = {};
-        if(req.body.searchby == "department"){
-            filter = {
+// router.post('/browsejob',(req,res)=>{
+//     var filter = {};
+//         if(req.body.searchby == "department"){
+//             filter = {
             
-                department : req.body.department
-            }
+//                 department : req.body.department
+//             }
 
-        }
-        Job.find(filter, (err, job) => {
-            if(err){
-                 res.status(400).send(err);
-            }else if(job[0]){
-                res.status(200).send({data:job});
-            }else{
-                res.status(200).send({data:"No data"});
-            }
+//         }
+//         Job.find(filter, (err, job) => {
+//             if(err){
+//                  res.status(400).send(err);
+//             }else if(job[0]){
+//                 res.status(200).send({data:job});
+//             }else{
+//                 res.status(200).send({data:"No data"});
+//             }
        
-         });
+//          });
   
-});
+// });
 
 
 router.get('/',verifyToken, async (req,res) => {
@@ -64,71 +64,63 @@ router.get('/',verifyToken, async (req,res) => {
         }
     });
         
-router.post('/search', async (req,res) => {
-    if(req.body.search == ""){
-    // if(req.query.searchby == null){
-        Job.find({}, (err,job) => {
-            if(!err){
-                    res.status(200).send({data:job});
-            }
-        });
-    }else{     
-        console.log(req.body.search);
-        Job.find({$or: [{role:req.body.search.toLowerCase()},{department:req.body.search.toLowerCase()}]}, (err, job) => {
-            console.log(job);        
-            if(!err){
-                            res.status(200).send({data:job});
-                        }
-                        else{
-                            res.status(400).send({"message":"No Such Jobs found"});
-                        }
-        });
-    }
-});
+// router.post('/search', async (req,res) => {
+//     if(req.body.search == ""){
+//     // if(req.query.searchby == null){
+//         Job.find({}, (err,job) => {
+//             if(!err){
+//                     res.status(200).send({data:job});
+//             }
+//         });
+//     }else{     
+//         console.log(req.body.search);
+//         Job.find({$or: [{role:req.body.search.toLowerCase()},{department:req.body.search.toLowerCase()}]}, (err, job) => {
+//             console.log(job);        
+//             if(!err){
+//                             res.status(200).send({data:job});
+//                         }
+//                         else{
+//                             res.status(400).send({"message":"No Such Jobs found"});
+//                         }
+//         });
+//     }
+// });
 
 });
-router.post('/jobdelete',verifyToken, function(req, res){
+router.post('/jobdelete',verifyToken,function(req, res){
     jwt.verify(req.token,'secretkey',(err,authdata)=>{
-        if(err){
-            res.send(403);
-        }
-        else{
-            var user= User.findOne({token:req.token},(err,user)=>{
-                if(err){
-                    res.status(400);
-                }
-                else{
-                    if(user.usertype==="admin"){
-                     var job=Job.findOne({_id:req.body._id},function(err,job){
-                        if(user.department==job.department){
-                            Job.findOneAndRemove({_id : req.body._id}, function(err){
-                                if (!err) {
-                                    res.send("job deleted");
-                                }
-                                 else {
-                                   res.send(err);
-                                }
-                            });
+         if(err){
+             res.send(403);
+         }
+         else{
+                 User.findOne({token:req.token},async(err,doc)=>{
+                     if(doc.usertype==="admin"){
+                         var job=Job.findOne({_id:req.body._id},function(err,job){
+                            if(doc.department==job.department){
+                                Job.findOneAndRemove({_id : req.body._id}, function(err){
+                                    if (!err) {
+                                        res.send("job deleted");
+                                    }
+                                     else {
+                                       res.send(err);
+                                    }
+                                });
+                            }
+                            else{
+                                res.status(403).send("not allowed to delete");
+                            }
+                         });
                         }
                         else{
-                            res.status(403).send("not allowed to delete");
-                        }
-                     });
-                    }
-                    else{
-                        res.status(403).send("not allowed to delete");
-                    }
+                         res.status(403).send("not allowed to delete");
+                     }
+                 });
                     
-                        
                     
-                }
-            });
-           
-        
-        }
-    });
-   
-    });
+            }
+         });
+    
+   });
 
  router.post('/',verifyToken, async (req, res) => {
         // First Validate The Request
