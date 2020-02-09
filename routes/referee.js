@@ -76,7 +76,14 @@ router.get('/resumes',verifyToken,(req, res)=>{
                 else{
                     
                     if(admin.usertype==="admin"){
-                       res.send('resumes sent');
+                        var referee = Referal.find({department :admin.department}, (err, referee) => {
+                            if(err){
+                                 res.status(400).send(err);
+                            }else{
+                                res.status(200).send(referee);
+                            }
+                       
+                         });
                     }
                     else{
                         res.status(403).send("not allowed to access");
