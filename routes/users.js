@@ -42,47 +42,46 @@ router.options('*', cors())
 
  // });
 //Admin to View the Employee
-router.get('/',verifyToken,async (req, res)=>{
+router.get('/',verifyToken, async (req,res) => {
+    
     jwt.verify(req.token,'secretkey',(err,authdata)=>{
         if(err){
-            res.send(403);
+            res.send(err);
         }
         else{
-            User.findOne({token:req.token},async (err,admin)=>{
+            User.findOne({token:req.token},async (err,docu) => {
+                
                 if(err){
                     res.status(400).send(err);
                 }
                 else{
-                    if(admin.usertype==="admin"){
-                        var user = User.find({usertype:"employee"}, (err, user) => {
+                    if(docu.usertype==="admin"){
+                        User.find({usertype : "employee"},(err,user)=>{
                             if(err){
                                 res.status(400).send(err);
-                            }else{
-                                if(user.length > 0){
-                                    res.status(200).send(user);
-                                }else{
+                            }
+                            else{
+                                if(user.length>0){
+                                    res.send(user);
+                                }
+                                else{
                                     res.status(200).send({data: "no such document found",authdata});
                                 }
                             }
-                           
                         });
+                       
                     }
                     else{
-                        res.status(403).send("not allowed to access");
+                        res.status(403).send("not allowed to view");
                     }
-                }
                     
-                
+                }
+                 
             });
-            
            
         }
     });
-   
-    
-    // res.status(200).send(user);
 });
-
 
  //Admin to add the employee 
 router.post('/',verifyToken, async (req, res) => {
