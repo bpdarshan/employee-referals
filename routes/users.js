@@ -155,7 +155,7 @@ router.post('/',verifyToken, async (req, res) => {
 router.post('/userdelete',verifyToken,function(req, res){
    jwt.verify(req.token,'secretkey',(err,authdata)=>{
         if(err){
-            res.send(403);
+            res.send(err);
         }
         else{
                 User.findOne({token:req.token},async(err,doc)=>{
@@ -172,12 +172,12 @@ router.post('/userdelete',verifyToken,function(req, res){
                                });
                            }
                            else{
-                               res.status(403).send("not allowed to delete");
+                               res.send("not allowed to delete");
                            }
                         });
                        }
                        else{
-                        res.status(403).send("not allowed to delete");
+                        res.send(err);
                     }
                 });
                    
