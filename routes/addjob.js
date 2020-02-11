@@ -87,7 +87,7 @@ router.get('/',verifyToken, async (req,res) => {
 // });
 
 });
-router.delete('/jobdelete',verifyToken,function(req, res){
+router.post('/jobdelete',verifyToken,function(req, res){
     jwt.verify(req.token,'secretkey',(err,authdata)=>{
          if(err){
              res.send(403);
