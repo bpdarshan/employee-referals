@@ -152,7 +152,7 @@ router.post('/',verifyToken, async (req, res) => {
 });
 
 //admin to delete the user
-router.post('/userdelete',verifyToken,function(req, res){
+router.get('/userdelete',verifyToken,function(req, res){
    jwt.verify(req.token,'secretkey',(err,authdata)=>{
         if(err){
             res.send(err);
