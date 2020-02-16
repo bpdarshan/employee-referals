@@ -197,7 +197,8 @@ function verifyToken(req,res,next){
         next();
     }
     else{
-        res.sendStatus(403);
+        res.send("does ur header is proper")
+       // res.sendStatus(403);
     }
 }
  
