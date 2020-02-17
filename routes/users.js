@@ -93,10 +93,10 @@ router.post('/',verifyToken, async (req, res) => {
             User.findOne({token:req.token}, async(err,doc) =>{
                 if(doc.usertype==="admin"){
                      //First Validate The Request
-                    const { error } = validate(req.body);
-                    if (error) {
-                        res.status(400).send(error.details[0].message);
-                    }
+                    // const { error } = validate(req.body);
+                    // if (error) {
+                    //     res.status(400).send(error.details[0].message);
+                    // }
                    // Check if this user already exisits
                    let user = await User.findOne({ email: req.body.email });
                     if (user) {
