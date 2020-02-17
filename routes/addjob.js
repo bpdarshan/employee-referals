@@ -140,7 +140,7 @@ router.post('/jobdelete',verifyToken,function(req, res){
                         else{
                             if(user.usertype==="admin"){
                             if(user.department===req.body.department){
-                                const { error } = validate(req.body);
+                                // const { error } = validate(req.body);
                         let job = await Job.findOne({ qualification:req.body.qualification,salary:req.body.salary,department:req.body.department,experience:req.body.experience,role:req.body.role});
                          if (job) {
                            res.status(400).send('That Job already exisits!');
