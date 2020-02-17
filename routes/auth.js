@@ -21,10 +21,10 @@ const router = express.Router();
 
 router.post('/', async  (req, res) => {
     // First Validate The HTTP Request
-    const { error } = validate(req.body);
-    if (error) {
-        res.send(error.details[0].message);
-    }
+   // const { error } = validate(req.body);
+    // if (error) {
+    //     res.send(error.details[0].message);
+    // }
  
     //  Now find the user by their email address
     let user = await User.findOne({ email: req.body.email });
@@ -38,7 +38,7 @@ router.post('/', async  (req, res) => {
     // those provided in the request
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) {
-        console.log(req.body.email,req.body.password);
+        // console.log(req.body.email,req.body.password);
          res.send(err);
     }
     if(user){
