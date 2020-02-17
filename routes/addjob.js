@@ -122,59 +122,108 @@ router.post('/jobdelete',verifyToken,function(req, res){
     
    });
 
- router.post('/',verifyToken, async (req, res) => {
-        // First Validate The Request
-        jwt.verify(req.token,'secretkey',(err,authdata)=>{
-            if(err){
-                res.send(err);
-            }
-            else{
-                User.findOne({token:req.token}, async(err,user) => {
-                    if(err){
-                        res.send(err);
-                    }
-                    else{
-                        if(!user){
-                            res.status(400).send(err);
-                        }
-                        else{
-                            if(user.usertype==="admin"){
-                            if(user.department===req.body.department){
-                                // const { error } = validate(req.body);
-                        let job = await Job.findOne({ qualification:req.body.qualification,salary:req.body.salary,department:req.body.department,experience:req.body.experience,role:req.body.role});
-                         if (job) {
-                           res.status(400).send('That Job already exisits!');
-                        }
-                        else 
-                        {
-                                // Insert the new user if they do not exist yet
-                              job = new Job(_.pick(req.body, ['qualification','salary','department','experience','role','referalbonus']));
-                               // res.status(200).send("job added succesfully");
-
-                              await job.save();
-                              res.json( "job added succesfully");
-                            //   const token = jwt.sign({ _id: job._id }, config.get('PrivateKey'));
-                            //   res.header('x-auth-token', token).send(_.pick(job, ['_id','qualification','salary','department','experience','role','referalbonus']));
-                        }
-                            }
-                            }
-
-                            else{
-                                res.status(403).send("Not allowed to add");
-                            }
-                        }
-                    }
-                    
+   router.post('/',verifyToken, async (req, res) => {
+    jwt.verify(req.token,'secretkey',(err,authdata)=>{
+        if(err){
+            res.send(err);
+        }
+        else{
+            User.findOne({token:req.token}, async(err,doc) =>{
+                if(doc.usertype==="admin"){
                    
-                });
-               
+                   let user = await Job.findOne({qualification:req.body.qualification,salary:req.body.salary,department:req.body.department,experience:req.body.experience,role:req.body.role});
+                    if (user) {
+                      res.status(400).send('That user already exisits!');
+                    } 
+                    else {
+                          user = new Job({
+                                "qualification" : req.body.qualification,
+                                "salary" : req.body.salary,
+                            "department" : req.body.department,
+                            "referalbonus" : req.body.referalbonus,
+                            "role" : req.body.role,
+                            "experience" :req.body.experience
+                            });
+                            if(doc.department===req.body.department){
+                            await user.save();
+                            res.status(200).json( " added succesfully");
+                            // const token = jwt.sign({ _id: user._id }, config.get('PrivateKey'));
+                            // res.header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email']));
+                            }
+                        }
+                    }     
+                });   
             }
         });
+    });    
+            
+                        
+                        
+                 
+                    
+                            
+                  
+                
+                    
+                
+               
+    
+
+//  router.post('/',verifyToken, async (req, res) => {
+//         // First Validate The Request
+//         jwt.verify(req.token,'secretkey',(err,authdata)=>{
+//             if(err){
+//                 res.send(err);
+//             }
+//             else{
+//                 User.findOne({token:req.token}, async(err,user) => {
+//                     if(err){
+//                         res.send(err);
+//                     }
+//                     else{
+//                         if(!user){
+//                             res.status(400).send(err);
+//                         }
+//                         else{
+//                             if(user.usertype==="admin"){
+                                
+//                             if(user.department==req.body.department){
+//                                 //const { error } = validate(req.body);
+//                                 console.log(req.body.department)
+//                         let job = await Job.findOne({ qualification:req.body.qualification,salary:req.body.salary,department:req.body.department,experience:req.body.experience,role:req.body.role});
+//                          if (job) {
+//                            res.status(400).send('That Job already exisits!');
+//                         }
+//                         else 
+//                         {
+//                                 // Insert the new user if they do not exist yet
+//                               job = new Job(_.pick(req.body, ['qualification','salary','department','experience','role','referalbonus']));
+//                                // res.status(200).send("job added succesfully");
+
+//                               await job.save();
+//                               res.json( "job added succesfully");
+//                             //   const token = jwt.sign({ _id: job._id }, config.get('PrivateKey'));
+//                             //   res.header('x-auth-token', token).send(_.pick(job, ['_id','qualification','salary','department','experience','role','referalbonus']));
+//                         }
+//                             }
+//                             }
+
+//                             else{
+//                                 res.status(403).send("Not allowed to add");
+//                             }
+//                         }
+//                     }
+                    
+                   
+//                 });
+               
+//             }
+//         });
         
     
            
         
-    });
+//     });
 
 
     function verifyToken(req,res,next){
