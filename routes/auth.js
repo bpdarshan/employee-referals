@@ -15,9 +15,9 @@ const router = express.Router();
 //     next();
 //   });
 
-var cors = require('cors')
-router.use(cors())
-router.options('*', cors())
+// var cors = require('cors')
+// router.use(cors())
+// router.options('*', cors())
 
 router.post('/', async  (req, res) => {
     // First Validate The HTTP Request

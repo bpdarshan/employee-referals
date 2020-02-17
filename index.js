@@ -17,8 +17,8 @@ mongoose.connect('mongodb+srv://darshan:darshan@cluster0-xhljx.mongodb.net/emplo
 
     
     
-// app.use(cors())
-// app.options('*', cors())
+app.use(cors())
+app.options('*', cors())
 app.use(express.json());
 app.use('/api/users/', users);
 app.use('/auth', auth);

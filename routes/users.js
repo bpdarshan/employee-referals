@@ -20,9 +20,9 @@ mongoose.set('useFindAndModify',false);
 //     next();
 //   });
 
-var cors = require('cors')
-router.use(cors())
-router.options('*', cors())
+// var cors = require('cors')
+// router.use(cors())
+// router.options('*', cors())
 // router.get('/:name', function(req, res) {
 //     var user = User.findOne({name:req.params.name}, (err, user) => {
 //         if(!err){

@@ -20,9 +20,9 @@ const config = require('config');
 //     next();
 //   });
 
-var cors = require('cors')
-router.use(cors())
-router.options('*', cors())
+// var cors = require('cors')
+// router.use(cors())
+// router.options('*', cors())
   
   //the admin can view their department referals
   router.get('/show_referals',verifyToken,async (req, res)=>{

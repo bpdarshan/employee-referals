@@ -15,9 +15,9 @@ const jwt = require('jsonwebtoken');
 //     next();
 //   });
 
-var cors = require('cors')
-router.use(cors())
-router.options('*', cors())
+// var cors = require('cors')
+// router.use(cors())
+// router.options('*', cors())
 
 // router.post('/browsejob',(req,res)=>{
 //     var filter = {};
