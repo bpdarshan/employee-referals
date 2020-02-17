@@ -30,7 +30,7 @@ router.post('/', async  (req, res) => {
     let user = await User.findOne({ email: req.body.email });
     if (!user) {
        
-         res.send('Incorrect email or password');
+         res.send(err);
     }
 
  
@@ -39,7 +39,7 @@ router.post('/', async  (req, res) => {
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) {
         console.log(req.body.email,req.body.password);
-         res.send('Incorrect email or password.');
+         res.send(err);
     }
     if(user){
         let payload = {
