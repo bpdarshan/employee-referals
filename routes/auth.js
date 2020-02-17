@@ -21,7 +21,7 @@ const router = express.Router();
 
 router.post('/', async  (req, res) => {
     // First Validate The HTTP Request
-   // const { error } = validate(req.body);
+    // const { error } = validate(req.body);
     // if (error) {
     //     res.send(error.details[0].message);
     // }
@@ -30,7 +30,7 @@ router.post('/', async  (req, res) => {
     let user = await User.findOne({ email: req.body.email });
     if (!user) {
        
-         res.send(err);
+         res.status(401).send("incorrect email or password");
     }
 
  
@@ -38,8 +38,8 @@ router.post('/', async  (req, res) => {
     // those provided in the request
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) {
-        // console.log(req.body.email,req.body.password);
-         res.send(err);
+        console.log(req.body.email,req.body.password);
+         res.status(401).send("incorrect email or password");
     }
     if(user){
         let payload = {
@@ -50,7 +50,7 @@ router.post('/', async  (req, res) => {
         jwt.sign(payload,'secretkey',(err,token)=>{
             User.findOneAndUpdate({email:req.body.email},{$set:{token:token}},{new: true}, (err, doc)=>{
                 if(err){
-                    res.send(err);
+                    res.status(401).send("incorrect email or password");
                 }
                 res.json({token,usertype: doc.usertype});
             });

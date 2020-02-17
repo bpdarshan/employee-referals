@@ -63,6 +63,41 @@ router.get('/',verifyToken, async (req,res) => {
            
         }
     });
+
+
+router.get('/adminjob',verifyToken, async (req,res) => {
+    
+    jwt.verify(req.token,'secretkey',(err,authdata)=>{
+        if(err){
+            res.send(403);
+        }
+        else{
+            var admin=User.findOne({token:req.token},(err,admin)=>{
+                if(err){
+                    res.send(err);
+                }
+                else{
+                     if(admin.usertype==="admin"){
+                         var job = Job.find({department:admin.department},(err,job)=>{
+                              if(err){
+                                 res.status(400).send(err);
+                            }else{
+                                res.status(200).send(job);
+                            }
+                         });
+                    
+                }else{
+                     res.status(403).send("not allowed to access");
+                }
+
+                }
+               
+            });
+            
+           
+        }
+    });
+});
         
 // router.post('/search', async (req,res) => {
 //     if(req.body.search == ""){
