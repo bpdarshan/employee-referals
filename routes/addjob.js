@@ -90,7 +90,7 @@ router.get('/',verifyToken, async (req,res) => {
 router.post('/jobdelete',verifyToken,function(req, res){
     jwt.verify(req.token,'secretkey',(err,authdata)=>{
          if(err){
-             res.send(403);
+             res.send(err);
          }
          else{
                  User.findOne({token:req.token},async(err,doc)=>{
