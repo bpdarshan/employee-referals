@@ -107,12 +107,12 @@ router.post('/jobdelete',verifyToken,function(req, res){
                                 });
                             }
                             else{
-                                res.status(403).send("not allowed to delete");
+                                res.send("not allowed to delete");
                             }
                          });
                         }
                         else{
-                         res.status(403).send("not allowed to delete");
+                         res.send("not allowed to delete");
                      }
                  });
                     
