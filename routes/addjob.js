@@ -236,7 +236,7 @@ router.post('/jobdelete',verifyToken,function(req, res){
             next();
         }
         else{
-            res.sendStatus(403);
+            res.send("send header proper idiots")
         }
     }
  
