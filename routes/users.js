@@ -56,7 +56,7 @@ router.get('/',verifyToken, async (req,res) => {
                 }
                 else{
                     if(docu.usertype==="admin"){
-                        User.find({usertype : "employee"},(err,user)=>{
+                        User.find({usertype : "employee", department:docu.department},(err,user)=>{
                             if(err){
                                 res.status(400).send(err);
                             }
