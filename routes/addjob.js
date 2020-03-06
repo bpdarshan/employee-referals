@@ -57,12 +57,13 @@ router.get('/',verifyToken, async (req,res) => {
                     res.send(job);
                 }
                 else{
-                    res.status(200).send({data: "no such document found",authdata});
+                    res.status(404).send( "no such document found",authdata);
                 }
             });
            
         }
     });
+});
 
 
 router.get('/adminjob',verifyToken, async (req,res) => {
@@ -121,7 +122,7 @@ router.get('/adminjob',verifyToken, async (req,res) => {
 //     }
 // });
 
-});
+//});
 router.post('/jobdelete',verifyToken,function(req, res){
     jwt.verify(req.token,'secretkey',(err,authdata)=>{
          if(err){
@@ -174,7 +175,7 @@ router.post('/jobdelete',verifyToken,function(req, res){
                           user = new Job({
                                 "qualification" : req.body.qualification,
                                 "salary" : req.body.salary,
-                            "department" : req.body.department,
+                            "department" :doc.department,
                             "referalbonus" : req.body.referalbonus,
                             "role" : req.body.role,
                             "experience" :req.body.experience

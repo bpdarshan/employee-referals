@@ -116,7 +116,7 @@ router.post('/',verifyToken, async (req, res) => {
                             "uid" : data.seq,
                             "usertype" : req.body.usertype,
                             "phone" : req.body.phone,
-                            "department" : req.body.department,
+                            "department" : doc.department,
                             "role" : req.body.role,
                             "salary" :req.body.salary
                             });
